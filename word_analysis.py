@@ -1,5 +1,6 @@
 import re
 import operator
+import sys
 
 
 def three_most_common_words(path):
@@ -80,14 +81,31 @@ def word_occurrences(word, path):
     return word_occurences
 
 
-if __name__ == '__main__':
-    # Given the path to a text file, return the 3 most common words in the file.
-    file_path = "/Users/callisto/Downloads/84-0.txt"
-    words = three_most_common_words(file_path)
-    print(words)
+def print_usage():
+    '''
+    Prints command line program usage information.
+    :return:
+    '''
 
-    # Given a word and the path to a text file, return the number of occurrences
-    # of the word in the file.
-    for word in words:
-        occurrences = word_occurrences(word, file_path)
-        print(word + ": " + str(occurrences))
+    print('Usage : "python word_analysis.py function [word] file')
+    print('function: either "common" or "occur"')
+    print(' -common : return the 3 most common words in the file')
+    print(' -occur : return the number of occurrences of the word in the file')
+
+
+if __name__ == '__main__':
+    # exit program if incorrect number of arguments are given
+    if len(sys.argv) < 3 or len(sys.argv) > 4:
+        print_usage()
+        sys.exit(2)
+
+    if sys.argv[1] == "common" and len(sys.argv) == 3:
+        words = three_most_common_words(sys.argv[2])
+        print("Three most common words:")
+        print(", ".join(words))
+    elif sys.argv[1] == "occur" and len(sys.argv) == 4:
+        number = word_occurrences(sys.argv[2], sys.argv[3])
+        print(str(number) + " occurrences of the word '" + sys.argv[2] + "'")
+    else:
+        print_usage()
+        sys.exit(2)
