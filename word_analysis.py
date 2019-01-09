@@ -19,13 +19,17 @@ def three_most_common_words(path):
     :param path: file path to text file
     :return: list of the three most common words in the file (ordered most common to least common)
     """
-    # regex pattern : (?<=\s)([a-zA-Z]+[-]?[a-zA-Z]*)(?=\s)
-    # (?<=\s) : Positive Lookbehind for space characters
-    # ([a-zA-Z]+ : Match 1 or more alphabetic characters
-    #   [-]? : Match 0 or 1 hyphens
-    #   [a-zA-Z]*) - Match 0 or more alphabetic characters
-    # (?=\s) - Positive Lookahead for space characters
-    word_pattern = re.compile("(?<=\s)([a-zA-Z]+[-]?[a-zA-Z]*)(?=\s)")
+
+    '''
+    regex pattern details:
+    
+    (?:(?<=\s)|(?<=^)) : Positive Lookbehind for space character or beginning of string
+    ([a-zA-Z]+ : Match 1 or more alphabetic characters
+      [-]? : Match 0 or 1 hyphens
+      [a-zA-Z]*) - Match 0 or more alphabetic characters
+    (?=\s) - Positive Lookahead for space character
+    '''
+    word_pattern = re.compile("(?:(?<=\s)|(?<=^))([a-zA-Z]+[-]?[a-zA-Z]*)(?=\s)")
     word_occurrences = {}
 
     try:
@@ -73,7 +77,7 @@ def word_occurrences(word, path):
 
     # the regex pattern makes sure the word has space characters before and after
     # the pattern matches any occurrences of the word, regardless of case
-    word_pattern = re.compile("(?<=\s)(" + stripped_word + ")(?=\s)", re.IGNORECASE)
+    word_pattern = re.compile("(?:(?<=\s)|(?<=^))(" + stripped_word + ")(?=\s)", re.IGNORECASE)
     word_occurences = 0
 
     try:
